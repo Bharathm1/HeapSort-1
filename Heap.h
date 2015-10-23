@@ -28,6 +28,8 @@ private:
     void swapWithParent(int node);
     bool bubbleUp(int node);
     bool bubbleDown(int node);
+    void heapSort();
+    void swapNodes(int node1, int node2);
 
     int mCurrentPos;
     const static int HEAP_SIZE = 25;
