@@ -7,6 +7,9 @@
 Heap::Heap() {
     //set current pos equal to zero
     mCurrentPos = 0;
+
+    //fillWithNums();
+
     fillWithRand();
 }
 
@@ -37,7 +40,8 @@ int *Heap::getHeap() {
 }
 
 int *Heap::getSortedHeap() {
-    return nullptr;
+    heapSort();
+    return mHeap;
 }
 
 //return true if node is larger than parent
@@ -57,16 +61,6 @@ void Heap::swapWithParent(int node) {
 
     swapNodes(node, getParent(node));
 
-    /*
-    int tempChild, tempParent;
-
-    tempChild = mHeap[node];
-    tempParent = mHeap[getParent(node)];
-
-    //swap the nodes
-    mHeap[getParent(node)] = tempChild;
-    mHeap[node] = tempParent;
-    */
 }
 
 bool Heap::bubbleUp(int node) {
@@ -93,14 +87,17 @@ bool Heap::bubbleUp(int node) {
 
 
 //this is going to be similar to the bubble up function but reverse obviously
-//doesnt work
-bool Heap::bubbleDown(int node) {
+bool Heap::bubbleDown(int node, int stoppingPoint) {
+
+    //if we are at an array element already swapped then stop
+    if(node >= stoppingPoint){
+        return false;
+    }
 
     //if this is attempted on a index at the bottom or lower of the array
     //return false and stop at the bottom
     if(node >= HEAP_SIZE-1){
-
-
+        return false;
     }
 
     int leftChild, rightChild;
@@ -110,24 +107,48 @@ bool Heap::bubbleDown(int node) {
 
     rightChild = (node+1) * 2;
 
-    //we will need to swap with the larger of the two children
-    //checking if left child is greater in value
-    //or if the right child is non-existant
-    if(rightChild != HEAP_SIZE &&
-            mHeap[leftChild] > mHeap[rightChild]){
-
-        swapNodes(leftChild, node);
-        bubbleDown(leftChild);
-
-    }
-    if(rightChild < HEAP_SIZE-1 &&
-            mHeap[leftChild] < mHeap[rightChild] ){
-
-        swapNodes(rightChild, node);
-        bubbleDown(rightChild);
+    //if we are at an array element already swapped then stop
+    if(leftChild >= stoppingPoint || rightChild >= stoppingPoint){
+        return false;
     }
 
 
+    //first check if right child is a thing
+    if(rightChild <= stoppingPoint){
+
+        //second check that parent isn't the larger
+        if(mHeap[node] > mHeap[leftChild] &&
+                mHeap[node] > mHeap[rightChild]){
+            return false;
+        }
+
+        //if right child is greater
+        if(mHeap[rightChild] > mHeap[leftChild]){
+            swapNodes(node, rightChild);
+            bubbleDown(rightChild, stoppingPoint);
+
+        }
+
+        //if the left child is larger
+        if(mHeap[leftChild] > mHeap[rightChild]){
+            swapNodes(node, leftChild);
+            bubbleDown(leftChild, stoppingPoint);
+        }
+
+
+    }
+
+    //only need to check with left child
+    if(leftChild < HEAP_SIZE){
+
+        //if left child is greater than node
+        if(mHeap[leftChild] > mHeap[node]){
+            swapNodes(node, leftChild);
+            //no need to try any more here
+            return false;
+        }
+
+    }
     return false;
 }
 
@@ -137,9 +158,12 @@ bool Heap::bubbleDown(int node) {
 //going to attempt this for first time
 void Heap::heapSort() {
 
+
     for (int i = 0; i < HEAP_SIZE; ++i) {
 
-        bubbleDown(0);
+        swapNodes(0, ((HEAP_SIZE-i) -1));
+
+        bubbleDown(0, (HEAP_SIZE-i) -1);
 
     }
 
@@ -162,5 +186,15 @@ void Heap::swapNodes(int node1, int node2) {
     mHeap[node2] = temp1;
     mHeap[node1] = temp2;
 
+
+}
+
+void Heap::fillWithNums() {
+
+    for (int i = 0; i < HEAP_SIZE; ++i) {
+
+        insert(i);
+
+    }
 
 }

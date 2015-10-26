@@ -17,6 +17,7 @@ public:
 
     void insert(int newNum);
     void fillWithRand();
+    void fillWithNums();
     int *getHeap();
     int *getSortedHeap();
 
@@ -27,7 +28,7 @@ private:
     int getLevel(int node);
     void swapWithParent(int node);
     bool bubbleUp(int node);
-    bool bubbleDown(int node);
+    bool bubbleDown(int node, int stoppingPoint);
     void heapSort();
     void swapNodes(int node1, int node2);
 
