@@ -11,7 +11,7 @@ int main() {
     tempArray = myHeap.getHeap();
 
 
-    for (int i = 0; i < 25; ++i) {
+    for (int i = 0; i < 10; ++i) {
         printf("Value No.%d is %d\n" ,i, tempArray[i]);
     }
 
@@ -19,7 +19,7 @@ int main() {
 
     int *tempSorted = myHeap.getSortedHeap();
 
-    for (int i = 0; i < 25; ++i) {
+    for (int i = 0; i < 10; ++i) {
         printf("Value No.%d is %d\n" ,i, tempSorted[i]);
     }
 

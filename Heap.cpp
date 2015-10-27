@@ -11,6 +11,21 @@ Heap::Heap() {
     //fillWithNums();
 
     fillWithRand();
+
+    /*
+    insert(65);
+    insert(42);
+    insert(47);
+    insert(27);
+    insert(13);
+    insert(7);
+    insert(26);
+    insert(18);
+    insert(1);
+    insert(9); */
+
+
+
 }
 
 void Heap::insert(int newNum) {
@@ -104,8 +119,16 @@ bool Heap::bubbleDown(int node, int stoppingPoint) {
 
     //assuming counting from node 0
     leftChild = ((node+1) * 2) - 1;
-
     rightChild = (node+1) * 2;
+
+    //last position
+    if(leftChild == stoppingPoint){
+
+        if(mHeap[node] > mHeap[leftChild]){
+            swapNodes(node, leftChild);
+        }
+        return false;
+    }
 
     //if we are at an array element already swapped then stop
     if(leftChild >= stoppingPoint || rightChild >= stoppingPoint){
@@ -113,12 +136,14 @@ bool Heap::bubbleDown(int node, int stoppingPoint) {
     }
 
 
+
+
     //first check if right child is a thing
-    if(rightChild <= stoppingPoint){
+    if(rightChild < stoppingPoint){
 
         //second check that parent isn't the larger
-        if(mHeap[node] > mHeap[leftChild] &&
-                mHeap[node] > mHeap[rightChild]){
+        if(mHeap[node] >= mHeap[leftChild] &&
+                mHeap[node] >= mHeap[rightChild]){
             return false;
         }
 
@@ -126,6 +151,7 @@ bool Heap::bubbleDown(int node, int stoppingPoint) {
         if(mHeap[rightChild] > mHeap[leftChild]){
             swapNodes(node, rightChild);
             bubbleDown(rightChild, stoppingPoint);
+            return false;
 
         }
 
@@ -133,13 +159,14 @@ bool Heap::bubbleDown(int node, int stoppingPoint) {
         if(mHeap[leftChild] > mHeap[rightChild]){
             swapNodes(node, leftChild);
             bubbleDown(leftChild, stoppingPoint);
+            return false;
         }
 
 
     }
 
     //only need to check with left child
-    if(leftChild < HEAP_SIZE){
+    if(leftChild <= stoppingPoint){
 
         //if left child is greater than node
         if(mHeap[leftChild] > mHeap[node]){
@@ -161,9 +188,10 @@ void Heap::heapSort() {
 
     for (int i = 0; i < HEAP_SIZE; ++i) {
 
-        swapNodes(0, ((HEAP_SIZE-i) -1));
 
-        bubbleDown(0, (HEAP_SIZE-i) -1);
+        //TODO can have 0 - 0 here for swaps
+            swapNodes(0, ((HEAP_SIZE-i) -1));
+            bubbleDown(0, (HEAP_SIZE-i) -1);
 
     }
 

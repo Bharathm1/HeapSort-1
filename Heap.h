@@ -33,7 +33,7 @@ private:
     void swapNodes(int node1, int node2);
 
     int mCurrentPos;
-    const static int HEAP_SIZE = 25;
+    const static int HEAP_SIZE = 10;
     int mHeap[HEAP_SIZE];
     int *mSortedHeap[HEAP_SIZE];
 
